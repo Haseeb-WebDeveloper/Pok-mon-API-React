@@ -1,12 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import './App.css';
 import PokemonCard from './Components/PokemonCard';
-import SearchPokimon from './Components/SearchPokimon';
 
 function App() {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonDetails, setPokemonDetails] = useState([]);
-  const [filteredPokemonDetails, setFilteredPokemonDetails] = useState([]);
+  const [search, setSearch] = useState("")
 
   const API_URL = 'https://pokeapi.co/api/v2/pokemon?limit=151';
 
@@ -28,7 +27,6 @@ function App() {
         );
         const details = await Promise.all(detailPromises);
         setPokemonDetails(details);
-        setFilteredPokemonDetails(details); // Initialize the filtered list with all Pokémon
       }
     } catch (error) {
       console.error('Error fetching Pokémon details:', error);
@@ -43,16 +41,10 @@ function App() {
     fetchPokemonDetails();
   }, [fetchPokemonDetails]);
 
-  const handleSearch = (searchTerm) => {
-    if (searchTerm === '') {
-      setFilteredPokemonDetails(pokemonDetails);
-    } else {
-      const filtered = pokemonDetails.filter(pokemon =>
-        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredPokemonDetails(filtered);
-    }
-  };
+  // Search Functionality
+  const searchPokemon = pokemonDetails.filter((currentPokemon) =>
+    currentPokemon.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <>
@@ -66,10 +58,18 @@ function App() {
             <h1 className='text-center text-[6vw] md:text-[4vw] font-semibold text-gray-950 pb-4'>Let's Catch Pokémon</h1>
           </div>
           <div id='Search'>
-            <SearchPokimon onSearch={handleSearch} />
+            <div className='mx-auto mb-8 max-w-[300px]'>
+              <input
+                className='w-full p-2 border border-gray-300 rounded focus:outline-none'
+                type="search"
+                name='search'
+                placeholder='Search Pokémon'
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 px-4 md:px-6 lg:px-10'>
-            {filteredPokemonDetails.map((pokemon) => (
+            {searchPokemon.map((pokemon) => (
               <PokemonCard key={pokemon.id} PokimonData={pokemon} />
             ))}
           </div>
