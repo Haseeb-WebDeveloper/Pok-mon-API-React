@@ -61,14 +61,14 @@ function App() {
         {pokemonDetails.length  && <h1>Pokémon details loaded successfully!</h1>} */}
       </div>
       <div className=''>
-        <div className='max-w-[1200px] mx-auto flex flex-col py-4'>
+        <div className='max-w-[1400px] mx-auto flex flex-col py-4'>
           <div>
             <h1 className='text-center text-[6vw] md:text-[4vw] font-semibold text-gray-950 pb-4'>Let's Catch Pokémon</h1>
           </div>
           <div id='Search'>
             <SearchPokimon onSearch={handleSearch} />
           </div>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 px-4 md:px-6 lg:px-10'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8 px-4 md:px-6 lg:px-10'>
             {filteredPokemonDetails.map((pokemon) => (
               <PokemonCard key={pokemon.id} PokimonData={pokemon} />
             ))}
